@@ -15,6 +15,7 @@ locals {
     image = "{AWS_ACCOUNT_ID}.dkr.ecr.{REGION}.amazonaws.com/{MY_IMG}:{TAG}",
     memory = 1024,
     vcpus = 1,
+    // see https://github.com/hashicorp/terraform-provider-aws/issues/15560
     logConfiguration = {
       logDriver = "awslogs",
       options = {
