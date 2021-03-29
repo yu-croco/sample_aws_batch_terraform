@@ -25,4 +25,7 @@ locals {
     },
     "jobRoleArn": aws_iam_role.job_definition.arn,
   }
+
+  ami_image_id = jsondecode(data.aws_ssm_parameter.ami.value)["image_id"]
+  suffix = trim(local.ami_image_id, "ami-")
 }
