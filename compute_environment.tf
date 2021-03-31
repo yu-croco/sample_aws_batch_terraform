@@ -1,6 +1,6 @@
 // https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html
-data "aws_ssm_parameter" "ami" {
-  name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended"
+data "aws_ssm_parameter" "ami_id" {
+  name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id"
 }
 
 // if you want to update AMI, terraform replace resource
@@ -24,7 +24,7 @@ resource "aws_batch_compute_environment" "aws-batch-computing-environment" {
     security_group_ids = [aws_security_group.aws_batch.id]
     subnets = aws_subnet.private_1a_aws_batch
     type = "EC2"
-    image_id = local.ami_image_id
+    image_id = data.aws_ssm_parameter.ami_id.value
   }
 
   // when you delete resource, aws_batch_compute_environment gets stuck...
