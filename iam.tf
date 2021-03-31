@@ -21,31 +21,6 @@ data "aws_iam_policy_document" "this" {
   }
 }
 
-// for pulling docker image from ECR
-resource "aws_iam_role_policy_attachment" "ecs_task_AmazonEC2ContainerRegistryReadOnly" {
-  role       = aws_iam_role.job_definition.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-}
-
-resource "aws_iam_role_policy" "this" {
-  name   = "aws-batch-role-policy"
-  role   = aws_iam_role.job_definition.id
-  policy = data.aws_iam_policy_document.ecs_task_cloudwatch.json
-}
-
-data "aws_iam_policy_document" "ecs_task_cloudwatch" {
-  statement {
-    effect = "Allow"
-    actions = [
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "logs:DescribeLogStreams"
-    ]
-    resources = ["arn:aws:logs:*:*:*"]
-  }
-}
-
 /*
   for aws batch compute environment instance role
 */
